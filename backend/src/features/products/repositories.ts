@@ -21,14 +21,14 @@ const productsRepository = () => {
       .from('products')
       .update(body)
       .where({ uid })
-      .returning(['uid', 'name', 'amount', 'price']);
+      .returning(['uid', 'name', 'amount', 'price', 'image']);
     return data;
   };
   const add = async (body: Products) => {
     const [data] = await db
       .insert(body)
       .into('products')
-      .returning(['uid', 'name', 'amount', 'price']);
+      .returning(['uid', 'name', 'amount', 'price', 'image']);
     return data;
   };
   const deleteProduct = async (uid: string) => {
@@ -52,6 +52,12 @@ const productsRepository = () => {
   const findInStock = async () => {
     return await db.select().from('products').where('amount', '>', 0);
   };
+  const addImage = async (uid: string, data: Buffer) => {
+    return await db.update('image', data).into('products').where({ uid });
+  };
+  const deleteImage = async (uid: string) => {
+    return await db.update('image', null).into('products').where({ uid });
+  };
   return {
     getAll,
     getOne,
@@ -62,6 +68,8 @@ const productsRepository = () => {
     findName,
     findNameLike,
     findPriceRange,
+    addImage,
+    deleteImage,
   };
 };
 

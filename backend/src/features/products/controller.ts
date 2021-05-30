@@ -105,6 +105,28 @@ const findPriceRange = async ({ after, before }: { after: Number; before: Number
   }
 };
 
+const addImage = async (file: any) => {
+  try {
+    const uid = Object.keys(file)[0];
+    console.info(`Add image to ${uid}`);
+    try {
+      return await products.addImage(uid, file[uid].data);
+    } catch (e) {}
+    return true;
+  } catch (e) {
+    throw new ApiError(500, e.message, e);
+  }
+};
+
+const deleteImage = async (uid: string) => {
+  try {
+    console.info(`Delete image to ${uid}`);
+    return await products.deleteImage(uid);
+  } catch (e) {
+    throw new ApiError(500, e.message, e);
+  }
+};
+
 export {
   getAllProducts,
   getOneProducts,
@@ -115,4 +137,6 @@ export {
   findProductsByName,
   findProductsByNameLike,
   findPriceRange,
+  addImage,
+  deleteImage,
 };

@@ -1,4 +1,5 @@
 import { createEffect, createStore } from 'effector';
+import { req } from '../../../lib/request';
 import {
   getProducts,
   getOneProduct,
@@ -56,6 +57,11 @@ const findProductsByPriceRangeFx = createEffect({
   handler: (body) => findProductsByPriceRange(body),
 });
 
+const deleteImageFx = createEffect({
+  name: 'Delete image on record',
+  handler: (uid) => req('DELETE', 'products', 'image/' + uid),
+});
+
 const $products = createStore([])
   .on(getAllProductsFx.done, (_, { result }) => result)
   .on(getOneProductFx.done, (_, { result }) => result)
@@ -68,7 +74,10 @@ const $products = createStore([])
   .on(productsInStockFx.done, (_, { result }) => result)
   .on(findByProductNameLikeFx.done, (_, { result }) => result)
   .on(findByProductNameFx.done, (_, { result }) => result)
-  .on(findProductsByPriceRangeFx.done, (_, { result }) => result);
+  .on(findProductsByPriceRangeFx.done, (_, { result }) => result)
+  .on(deleteImageFx.done, (_, { result }) => {
+    getAllProductsFx();
+  });
 
 $products.watch((state) => console.log('-> Products', state));
 
@@ -83,4 +92,5 @@ export {
   findProductsByPriceRangeFx,
   findByProductNameLikeFx,
   findByProductNameFx,
+  deleteImageFx,
 };

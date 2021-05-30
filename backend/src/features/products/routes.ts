@@ -10,6 +10,8 @@ import {
   findProductsByNameLike,
   getAllProducts,
   getOneProducts,
+  addImage,
+  deleteImage,
 } from './controller';
 import {
   uuidValidation,
@@ -18,9 +20,11 @@ import {
   nameValidation,
   priceRangeValidation,
 } from './schemas';
+const fileUpload = require('express-fileupload');
 
 const router = express.Router();
 router.use(express.json());
+router.use(fileUpload());
 
 router.get('/', async (req, res, next) => {
   try {
@@ -112,6 +116,24 @@ router.post('/', async (req, res, next) => {
     if (isNotValid) throw new ApiError(400, isNotValid.message, isNotValid);
     //@ts-ignore
     return res.respondWith(await addProduct(req.body));
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post('/image', async (req, res, next) => {
+  try {
+    //@ts-ignore
+    return res.respondWith(await addImage(req.files));
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.delete('/image/:id', async (req, res, next) => {
+  try {
+    //@ts-ignore
+    return res.respondWith(await deleteImage(req.params.id));
   } catch (e) {
     next(e);
   }

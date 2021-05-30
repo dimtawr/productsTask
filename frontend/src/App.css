@@ -78,3 +78,8 @@
   display: flex;
   align-content: center;
 }
+
+.product-table-image {
+  max-height: 100px;
+  max-width: auto;
+}

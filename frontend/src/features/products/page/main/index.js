@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useStore } from 'effector-react';
-import { $products, deleteProductFx, getAllProductsFx } from '../../api/model';
+import { $products, deleteImageFx, deleteProductFx, getAllProductsFx } from '../../api/model';
 import { Button, Input, Row, Table } from 'reactstrap';
 import ModalAdd from '../add';
 import { changeStateAddModal } from '../add/api';
 import ComponentChanger from '../search';
 import ModalEdit from '../edit';
 import { changeStateEditElement, changeStateEditModal } from '../edit/api';
+import { req } from '../../../../lib/request';
+import Uploader from '../upload';
 
 const ProductsMainPage = () => {
   const [products, setProducts] = useState([]);
@@ -15,6 +17,7 @@ const ProductsMainPage = () => {
   const [priceSortFlag, setPriceSortFlag] = useState(true);
   const [amountSortFlag, setAmountSortFlag] = useState(true);
   const [typeSerachLine, setTypeSearchLine] = useState('name');
+  const [uploadedFile, setUploadedFile] = useState('');
 
   const AddModalComponent = ModalAdd();
   const EditModalComponent = ModalEdit();
@@ -78,6 +81,10 @@ const ProductsMainPage = () => {
     changeStateEditModal(true);
   }, []);
 
+  const handleDeleteImage = (e) => {
+    deleteImageFx(e.target.value);
+  };
+
   return (
     <>
       {AddModalComponent}
@@ -104,6 +111,7 @@ const ProductsMainPage = () => {
           <Table bordered dark>
             <thead>
               <tr>
+                <th>Photo</th>
                 <th>
                   <div onClick={handleClickName}>Name</div>
                 </th>
@@ -120,6 +128,24 @@ const ProductsMainPage = () => {
             <tbody>
               {products.map((element) => (
                 <tr key={element.uid}>
+                  <th>
+                    {element.image ? (
+                      <>
+                        <img
+                          className='product-table-image'
+                          src={`data:image/png;base64,${Buffer.from(element.image.data).toString(
+                            'base64',
+                          )}`}
+                        />
+                        {'  '}
+                        <Button value={element.uid} onClick={handleDeleteImage}>
+                          Delete
+                        </Button>
+                      </>
+                    ) : (
+                      <Uploader uid={element.uid} />
+                    )}
+                  </th>
                   <th>{element.name}</th>
                   <th>{element.price}</th>
                   <th>{element.amount}</th>
