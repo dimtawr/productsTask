@@ -34,14 +34,17 @@ const deleteProduct = async (uid: string) => {
   }
 };
 
-const editProduct = async ({ uid, body }: { uid: string; body: Products }) => {
-  console.info(`Update product ${uid}, new body:`, body);
+const editProduct = async (body: Products) => {
   try {
-    const isExist = await products.getOne(uid);
+    console.info(`Update product ${body.uid}, new body:`, body);
+    const isExist = await products.getOne(body.uid);
     if (!isExist) throw new ApiError(404, 'Product not found', '');
-    const nameExist = await products.findName(isExist.name);
-    if (nameExist.length > 0) throw new ApiError(400, 'This product name already exist', '');
-    return await products.edit({ uid, body });
+    const nameExist = await products.findName(body.name);
+    if (nameExist[0]) {
+      if (nameExist.length > 1 || (nameExist.length === 1 && nameExist[0].uid !== body.uid))
+        throw new ApiError(400, 'This product name already exist', '');
+    }
+    return await products.edit(body);
   } catch (e) {
     throw new ApiError(500, e.message, e);
   }
@@ -52,7 +55,7 @@ const addProduct = async (body: Products) => {
   try {
     const nameExist = await products.findName(body.name);
     if (nameExist.length > 0) throw new ApiError(400, 'Product with this name already exist', '');
-    return await products.add(body)
+    return await products.add(body);
   } catch (e) {
     throw new ApiError(500, e.message, e);
   }
@@ -84,7 +87,7 @@ const findProductsByNameLike = async (name: string) => {
   console.info(`Get request on find products with name like ${name}`);
   try {
     const data = await products.findNameLike(name);
-    if (data.length) throw new ApiError(404, `Products with name like this not found`, '');
+    if (data.length === 0) throw new ApiError(404, `Products with name like this not found`, '');
     return data;
   } catch (e) {
     throw new ApiError(500, e.message, e);
@@ -92,9 +95,14 @@ const findProductsByNameLike = async (name: string) => {
 };
 
 const findPriceRange = async ({ after, before }: { after: Number; before: Number }) => {
+  if (!after) after = 0;
   console.info(`Get request on find products on price 
-    ${after ? `${after} <=` : ''} 
-    ${before ? `our products <= ${before}` : 'our products'}`);
+    ${after} <= our products <= ${before ? before : 'ထ'}`);
+  try {
+    return await products.findPriceRange({ after, before });
+  } catch (e) {
+    throw new ApiError(500, e.message, e);
+  }
 };
 
 export {

@@ -1,43 +1,53 @@
 import knex from '../../common/connection';
 
 export type Products = {
+  uid?: string;
   name: string;
   amount: number;
   price: number;
 };
 
-const db = knex();
+const db = knex;
 const productsRepository = () => {
   const getAll = async () => {
     return await db.select().from('products');
   };
-  const getOne = async (uid: string) => {
+  const getOne = async (uid: string | undefined) => {
     const [data] = await db.select().from('products').where({ uid });
     return data;
   };
-  const edit = async ({ uid, body }: { uid: String; body: Products }) => {
-    const [data] = await db.from('products').update(body).where({ uid }).returning('*');
+  const edit = async ({ uid, ...body }: Products) => {
+    const [data] = await db
+      .from('products')
+      .update(body)
+      .where({ uid })
+      .returning(['uid', 'name', 'amount', 'price']);
     return data;
   };
   const add = async (body: Products) => {
-    return await db.from('products').insert(body).returning('');
+    const [data] = await db
+      .insert(body)
+      .into('products')
+      .returning(['uid', 'name', 'amount', 'price']);
+    return data;
   };
   const deleteProduct = async (uid: string) => {
     await db.from('products').delete().where({ uid });
     return getAll();
   };
   const findNameLike = async (name: string) => {
-    return await db.select().from('products').where('name', 'like', `%${name}%`);
-  };
-  const findName = async (name: string) => {
-    return await db.select().from('products').where({ name });
-  };
-  const findPriceRange = async ({ after, before }: { after: Number; before: Number }) => {
     return await db
       .select()
       .from('products')
-      .where('price', '>=', String(after))
-      .where('price', '<=', String(before));
+      .whereRaw("LOWER(name) LIKE '%' || LOWER(?) || '%' ", name);
+  };
+  const findName = async (name: string) => {
+    return await db.select().from('products').whereRaw('LOWER(name) = LOWER(?)', name);
+  };
+  const findPriceRange = async ({ after, before }: { after: Number; before: Number }) => {
+    const data = await db.select().from('products').where('price', '>=', String(after));
+    if (before) return data.filter((element) => element.price <= before);
+    return data;
   };
   const findInStock = async () => {
     return await db.select().from('products').where('amount', '>', 0);

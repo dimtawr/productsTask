@@ -42,8 +42,9 @@ const uuidValidation = (uuid: string) => {
   return result.error;
 };
 
-const editValidation = ({ uid, body }: { uid: string; body: Products }) => {
+const editValidation = ({ uid, ...body }: { uid: string; body: Products }) => {
   const uidResult = uuidValidation(uid);
+  //@ts-ignore
   const bodyResult = addValidation(body);
   return uidResult ? uidResult : bodyResult;
 };
@@ -64,7 +65,7 @@ const nameValidation = (name: string) => {
 
 const priceRangeValidation = ({ after, before }: { after: Number; before: Number }) => {
   const schema = joi.object({
-    after: joi.number().min(0).required().messages({
+    after: joi.number().min(0).messages({
       'any.required': `'After' must exist`,
       'number.base': `'After' must be a number`,
       'number.min': `'After' must be a positive`,
