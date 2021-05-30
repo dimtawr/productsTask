@@ -5,6 +5,7 @@
   background-color: #282c34;
   color: whitesmoke;
   text-align: center;
+  align-items: center;
 }
 
 .App-header {
@@ -82,4 +83,35 @@
 .product-table-image {
   max-height: 100px;
   max-width: auto;
+}
+
+.authorization-window-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 22px;
+  padding: 50px;
+  background-color: rgb(56, 52, 52);
+  min-width: 50vw;
+  min-height: 50vh;
+}
+
+.authorization-window-inputs {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3%;
+  width: 60%;
+  align-self: center;
+}
+
+.authorization-window-button {
+  margin-right: 3%;
+  max-height: 50px;
+  min-width: 100px;
+}
+
+.authorization-window-button-row {
+  margin-top: 3%;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
 }

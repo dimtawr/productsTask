@@ -130,7 +130,7 @@ const ProductsMainPage = () => {
                     {element.image ? (
                       <>
                         <img
-													alt='error load'
+                          alt='error load'
                           className='product-table-image'
                           src={`data:image/png;base64,${Buffer.from(element.image.data).toString(
                             'base64',
