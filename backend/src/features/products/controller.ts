@@ -52,6 +52,7 @@ const addProduct = async (body: Products) => {
   try {
     const nameExist = await products.findName(body.name);
     if (nameExist.length > 0) throw new ApiError(400, 'Product with this name already exist', '');
+    return await products.add(body)
   } catch (e) {
     throw new ApiError(500, e.message, e);
   }

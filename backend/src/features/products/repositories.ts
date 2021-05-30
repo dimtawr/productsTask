@@ -20,7 +20,7 @@ const productsRepository = () => {
     return data;
   };
   const add = async (body: Products) => {
-    return await db.from('products').insert(body).returning('*');
+    return await db.from('products').insert(body).returning('');
   };
   const deleteProduct = async (uid: string) => {
     await db.from('products').delete().where({ uid });
