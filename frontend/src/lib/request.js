@@ -3,7 +3,6 @@ import { cacheToken } from '../App';
 import { errorHandler } from './errorHandler';
 
 async function req(type, address, uid, body) {
-  console.log(cacheToken);
   const requestAddress = uid
     ? `http://localhost:8080/` + address + '/' + uid
     : `http://localhost:8080/` + address;

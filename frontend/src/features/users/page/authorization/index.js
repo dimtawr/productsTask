@@ -1,4 +1,4 @@
-import { Component, useState } from 'react';
+import { useState } from 'react';
 import { Button, Input, Row } from 'reactstrap';
 import { loginFx, registrationFx } from '../../api/model';
 
