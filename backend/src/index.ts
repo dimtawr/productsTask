@@ -3,6 +3,7 @@ import cors from 'cors';
 import respondWith from './common/respondWith';
 import errorHandler from './common/errorHandler';
 import products from './features/products';
+import users from './features/users';
 
 require('dotenv').config('.env');
 
@@ -16,5 +17,6 @@ app.listen(port, host, () => {
 });
 
 app.use('/products', products);
+app.use('/users', users);
 
 app.use(errorHandler());

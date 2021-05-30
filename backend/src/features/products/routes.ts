@@ -1,5 +1,6 @@
 import express from 'express';
 import ApiError from '../../common/ApiError';
+import checkToken from '../../common/checkToken';
 import {
   addProduct,
   deleteProduct,
@@ -28,6 +29,7 @@ router.use(fileUpload());
 
 router.get('/', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     //@ts-ignore
     return res.respondWith(await getAllProducts());
   } catch (e) {
@@ -37,6 +39,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/inStock', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     //@ts-ignore
     return res.respondWith(await findProductInStock());
   } catch (e) {
@@ -46,6 +49,7 @@ router.get('/inStock', async (req, res, next) => {
 
 router.get('/name/:id', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     const isNotValid = nameValidation(req.params.id);
     if (isNotValid) throw new ApiError(400, isNotValid.message, isNotValid);
     //@ts-ignore
@@ -57,6 +61,7 @@ router.get('/name/:id', async (req, res, next) => {
 
 router.get('/name-like/:id', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     const isNotValid = nameValidation(req.params.id);
     if (isNotValid) throw new ApiError(400, isNotValid.message, isNotValid);
     //@ts-ignore
@@ -68,6 +73,7 @@ router.get('/name-like/:id', async (req, res, next) => {
 
 router.post('/price-range', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     const isNotValid = priceRangeValidation(req.body);
     if (isNotValid) throw new ApiError(400, isNotValid.message, isNotValid);
     //@ts-ignore
@@ -79,6 +85,7 @@ router.post('/price-range', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     const isNotValid = uuidValidation(req.params.id);
     if (isNotValid) throw new ApiError(400, isNotValid.message, isNotValid);
     //@ts-ignore
@@ -90,6 +97,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     const isNotValid = uuidValidation(req.params.id);
     if (isNotValid) throw new ApiError(400, isNotValid.message, isNotValid);
     //@ts-ignore
@@ -101,6 +109,7 @@ router.delete('/:id', async (req, res, next) => {
 
 router.put('/', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     const isNotValid = editValidation(req.body);
     if (isNotValid) throw new ApiError(400, isNotValid.message, isNotValid);
     //@ts-ignore
@@ -112,6 +121,7 @@ router.put('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     const isNotValid = addValidation(req.body);
     if (isNotValid) throw new ApiError(400, isNotValid.message, isNotValid);
     //@ts-ignore
@@ -123,6 +133,7 @@ router.post('/', async (req, res, next) => {
 
 router.post('/image', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     //@ts-ignore
     return res.respondWith(await addImage(req.files));
   } catch (e) {
@@ -132,6 +143,7 @@ router.post('/image', async (req, res, next) => {
 
 router.delete('/image/:id', async (req, res, next) => {
   try {
+    if (!(await checkToken(req))) throw new ApiError(403, 'Token is not valid', '');
     //@ts-ignore
     return res.respondWith(await deleteImage(req.params.id));
   } catch (e) {
