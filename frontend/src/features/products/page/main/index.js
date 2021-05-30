@@ -7,7 +7,6 @@ import { changeStateAddModal } from '../add/api';
 import ComponentChanger from '../search';
 import ModalEdit from '../edit';
 import { changeStateEditElement, changeStateEditModal } from '../edit/api';
-import { req } from '../../../../lib/request';
 import Uploader from '../upload';
 
 const ProductsMainPage = () => {
@@ -17,7 +16,6 @@ const ProductsMainPage = () => {
   const [priceSortFlag, setPriceSortFlag] = useState(true);
   const [amountSortFlag, setAmountSortFlag] = useState(true);
   const [typeSerachLine, setTypeSearchLine] = useState('name');
-  const [uploadedFile, setUploadedFile] = useState('');
 
   const AddModalComponent = ModalAdd();
   const EditModalComponent = ModalEdit();
@@ -132,6 +130,7 @@ const ProductsMainPage = () => {
                     {element.image ? (
                       <>
                         <img
+													alt='error load'
                           className='product-table-image'
                           src={`data:image/png;base64,${Buffer.from(element.image.data).toString(
                             'base64',

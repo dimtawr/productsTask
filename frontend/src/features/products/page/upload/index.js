@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import { errorHandler } from '../../../../lib/errorHandler';
 import { reqMedia } from '../../../../lib/request';
 import { getAllProductsFx } from '../../api/model';
@@ -17,8 +17,6 @@ const Uploader = ({ uid }) => {
       getAllProductsFx();
     }, 1000);
   };
-
-  const onFileUpload = () => {};
 
   return <input type='file' onChange={onFileChange} />;
 };
