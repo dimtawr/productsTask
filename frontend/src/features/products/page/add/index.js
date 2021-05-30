@@ -69,7 +69,7 @@ function ModalAdd() {
 
   return (
     <Modal isOpen={modal}>
-      <ModalHeader>Modal title</ModalHeader>
+      <ModalHeader>Add product</ModalHeader>
       <ModalBody>
         Name: <Input name='name' defaultValue={addedBody.name} onChange={handleChange}></Input>
         {''}

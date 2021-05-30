@@ -70,7 +70,7 @@ function ModalEdit() {
 
   return (
     <Modal isOpen={modal}>
-      <ModalHeader>Modal title</ModalHeader>
+      <ModalHeader>Edit product</ModalHeader>
       <ModalBody>
         Name: <Input name='name' defaultValue={editedBody.name} onChange={handleChange}></Input>
         Price:{' '}
