@@ -35,12 +35,12 @@ const deleteProduct = async (uid: string) => {
 };
 
 const editProduct = async ({ uid, body }: { uid: string; body: Products }) => {
-  console.info(`Update product ${uid}, new body: ${body}`);
+  console.info(`Update product ${uid}, new body:`, body);
   try {
     const isExist = await products.getOne(uid);
     if (!isExist) throw new ApiError(404, 'Product not found', '');
     const nameExist = await products.findName(isExist.name);
-    if (nameExist) throw new ApiError(400, 'This product name already exist', '');
+    if (nameExist.length > 0) throw new ApiError(400, 'This product name already exist', '');
     return await products.edit({ uid, body });
   } catch (e) {
     throw new ApiError(500, e.message, e);
@@ -48,10 +48,10 @@ const editProduct = async ({ uid, body }: { uid: string; body: Products }) => {
 };
 
 const addProduct = async (body: Products) => {
-  console.info(`Get request add new product ${body}`);
+  console.info(`Get request add new product`, body);
   try {
     const nameExist = await products.findName(body.name);
-    if (nameExist) throw new ApiError(400, 'Product with this name already exist', '');
+    if (nameExist.length > 0) throw new ApiError(400, 'Product with this name already exist', '');
   } catch (e) {
     throw new ApiError(500, e.message, e);
   }
