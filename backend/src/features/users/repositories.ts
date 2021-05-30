@@ -12,7 +12,10 @@ export type User = {
 const db = knex;
 const usersRepository = () => {
   const getUser = async (login: string) => {
-    const [data] = await db.select().from('users').where({ login });
+    const [data] = await db
+      .select()
+      .from('users')
+      .whereRaw(`LOWER(login) = ?`, login.toLowerCase());
     return data;
   };
   const getUserByUid = async (uid: string) => {

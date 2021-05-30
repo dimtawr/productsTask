@@ -42,10 +42,10 @@ const ProductsMainPage = () => {
   function handleClickPrice(e) {
     e.preventDefault();
     if (priceSortFlag) {
-      setProducts(products.sort((a, b) => (a.price > b.price ? 1 : -1)));
+      setProducts(products.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1)));
       setPriceSortFlag(false);
     } else {
-      setProducts(products.sort((a, b) => (a.price > b.price ? -1 : 1)));
+      setProducts(products.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1)));
       setPriceSortFlag(true);
     }
   }
@@ -53,10 +53,10 @@ const ProductsMainPage = () => {
   function handleClickAmount(e) {
     e.preventDefault();
     if (amountSortFlag) {
-      setProducts(products.sort((a, b) => (a.price > b.price ? 1 : -1)));
+      setProducts(products.sort((a, b) => (Number(a.amount) > Number(b.amount) ? 1 : -1)));
       setAmountSortFlag(false);
     } else {
-      setProducts(products.sort((a, b) => (a.price > b.price ? -1 : 1)));
+      setProducts(products.sort((a, b) => (Number(a.amount) > Number(b.amount) ? -1 : 1)));
       setAmountSortFlag(true);
     }
   }
