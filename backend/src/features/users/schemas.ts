@@ -11,17 +11,18 @@ const complexityOptions = {
   requirementCount: 5,
 };
 
-const loginSchema = joi.string().regex(/^.*$/).required().min(5).max(30).messages({
-  'any.required': `Поле login должно существовать`,
-  'string.base': `Тип login должен быть string`,
-  'string.min': `Минимум 5 символов в поле login`,
-  'string.max': `Максимум 30 символов в поле login`,
-  'string.pattern.base': `Используйте только латиницу и/или цифры`,
-});
+const loginSchema = joi
+  .string()
+  .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net', 'ru'] } })
+  .required()
+  .messages({
+    'any.required': `Field 'login' must exist`,
+    'string.base': `Type of 'login' must be a string`,
+    'string.email': `'Login' is incorrect email address`,
+  });
 
-function authValidation({ login, password, confirmPassword }: User) {
+function authValidation({ login, password }: User) {
   if (!password || password === '') return { message: 'Please enter password' };
-  if (password !== confirmPassword) return { message: 'Password mismatch' };
   const result = passwordComplexity(complexityOptions).validate(password);
   let resultError = '';
   result.error
@@ -52,7 +53,13 @@ function authValidation({ login, password, confirmPassword }: User) {
     : null;
   if (resultError !== '') return { message: `Password:\n` + resultError };
   const checkLogin = loginSchema.validate(login);
+  console.log(checkLogin.error);
   return checkLogin.error;
 }
 
-export default authValidation;
+function registrValidation({ login, password, confirmPassword }: User) {
+  if (password !== confirmPassword) return { message: 'Password mismatch' };
+  return authValidation({ login, password });
+}
+
+export { authValidation, registrValidation };
