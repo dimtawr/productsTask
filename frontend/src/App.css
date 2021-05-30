@@ -29,6 +29,11 @@
   align-self: center;
 }
 
+.product-table-container-scroll {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
 .product-table-support-line {
   flex-wrap: nowrap;
   display: flex;

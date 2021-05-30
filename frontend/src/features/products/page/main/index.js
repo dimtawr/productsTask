@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useStore } from 'effector-react';
 import { $products, deleteProductFx, getAllProductsFx } from '../../api/model';
-import { Button, Input, Row } from 'reactstrap';
+import { Button, Input, Row, Table } from 'reactstrap';
 import ModalAdd from '../add';
 import { changeStateAddModal } from '../add/api';
 import ComponentChanger from '../search';
@@ -100,38 +100,40 @@ const ProductsMainPage = () => {
             ➕
           </Button>
         </Row>
-        <table className='table table-dark'>
-          <thead>
-            <tr>
-              <th>
-                <div onClick={handleClickName}>Name</div>
-              </th>
-              <th>
-                <div onClick={handleClickPrice}>Price</div>
-              </th>
-              <th>
-                <div onClick={handleClickAmount}>Amount</div>
-              </th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((element) => (
-              <tr key={element.uid}>
-                <th>{element.name}</th>
-                <th>{element.price}</th>
-                <th>{element.amount}</th>
+        <div className='product-table-container-scroll'>
+          <Table bordered dark>
+            <thead>
+              <tr>
                 <th>
-                  <Button onClick={() => handleOpenModalEdit(element)}>✎</Button>
+                  <div onClick={handleClickName}>Name</div>
                 </th>
                 <th>
-                  <Button onClick={() => handleDeleteClick(element.uid)}>🗑</Button>
+                  <div onClick={handleClickPrice}>Price</div>
                 </th>
+                <th>
+                  <div onClick={handleClickAmount}>Amount</div>
+                </th>
+                <th></th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {products.map((element) => (
+                <tr key={element.uid}>
+                  <th>{element.name}</th>
+                  <th>{element.price}</th>
+                  <th>{element.amount}</th>
+                  <th>
+                    <Button onClick={() => handleOpenModalEdit(element)}>✎</Button>
+                  </th>
+                  <th>
+                    <Button onClick={() => handleDeleteClick(element.uid)}>🗑</Button>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       </div>
     </>
   );
