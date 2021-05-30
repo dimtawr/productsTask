@@ -5,7 +5,7 @@ exports.up = async (knex) => {
     t.uuid('uid').primary().defaultTo(knex.raw("uuid_generate_v4()"));
     t.string('name')
     t.decimal('price')
-    t.number('amount')
+    t.integer('amount')
   })
 };
 
