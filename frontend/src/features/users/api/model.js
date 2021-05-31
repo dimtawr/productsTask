@@ -15,6 +15,4 @@ const $token = createStore({ user: null, token: null })
   .on(loginFx.done, (_, { result }) => ({ user: result.data.login, token: result.token }))
   .on(registrationFx.done, (_, { result }) => ({ user: result.data.login, token: result.token }));
 
-$token.watch((state) => console.log(state));
-
 export { $token, registrationFx, loginFx };

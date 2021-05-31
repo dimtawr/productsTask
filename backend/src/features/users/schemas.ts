@@ -53,7 +53,6 @@ function authValidation({ login, password }: User) {
     : null;
   if (resultError !== '') return { message: `Password:\n` + resultError };
   const checkLogin = loginSchema.validate(login);
-  console.log(checkLogin.error);
   return checkLogin.error;
 }
 
