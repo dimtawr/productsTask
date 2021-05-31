@@ -8,7 +8,6 @@ const Uploader = ({ uid }) => {
     const formData = new FormData();
 
     if (!event.target.files[0]) return errorHandler('Please choose file');
-    console.log(event.target.files[0]);
     formData.append(uid, event.target.files[0]);
 
     reqMedia('POST', 'products', 'image', formData);
